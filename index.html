@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #entryList {
+            list-style: none;
+            padding: 0;
+        }
+
+        .entry {
+            margin-bottom: 10px;
+        }
+
+        button {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Booking App</h1>
+    
+    <form id="bookingForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required> <br> <br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br><br>
+        
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" required> <br><br>
+        
+        <button type="button" onclick="addEntry()">Submit</button>
+    </form>
+
+    <ul id="entryList"></ul>
+
+    <script>
+        let entries = [];
+
+        function addEntry() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            const entry = {
+                username,
+                email,
+                phone
+            };
+
+            entries.push(entry);
+            displayEntries();
+            clearForm();
+        }
+
+        function displayEntries() {
+            const entryList = document.getElementById('entryList');
+            entryList.innerHTML = '';
+
+            entries.forEach((entry, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'entry';
+
+                listItem.innerHTML = `
+                    <span>${entry.username} - ${entry.email} - ${entry.phone}</span>
+                    <button onclick="editEntry(${index})">Edit</button>
+                    <button onclick="deleteEntry(${index})">Delete</button>
+                `;
+
+                entryList.appendChild(listItem);
+            });
+        }
+
+        function editEntry(index) {
+            const entry = entries[index];
+            document.getElementById('username').value = entry.username;
+            document.getElementById('email').value = entry.email;
+            document.getElementById('phone').value = entry.phone;
+
+            entries.splice(index, 1);
+            displayEntries();
+        }
+
+        function deleteEntry(index) {
+            entries.splice(index, 1);
+            displayEntries();
+        }
+
+        function clearForm() {
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+        }
+    </script>
+</body>
+</html>
